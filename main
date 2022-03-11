@@ -1,0 +1,98 @@
+def FirstFit(NoofProc, ProcessSize, NoofPartitions, SizeandStatesofPartitions):
+    n = NoofProc
+    flag = False
+    for i in range(1, NoofProc + 1):
+
+        for j in range(NoofPartitions):
+
+            if SizeandStatesofPartitions[j][2] is False and ProcessSize[i - 1] < \
+                    SizeandStatesofPartitions[j][0]:
+                SizeandStatesofPartitions[j][1] = i
+                SizeandStatesofPartitions[j][2] = True
+                flag = True
+                break
+
+    print("Process No \t Process Size \t Block Number")
+    for i in range(1, NoofProc + 1):
+        print(i, "\t\t\t\t", ProcessSize[i - 1], "\t\t\t", end="")
+        for j in range(NoofPartitions):
+            if i == SizeandStatesofPartitions[j][1]:
+                print("Block", SizeandStatesofPartitions[j][3])
+        print("\n")
+
+
+def WorstFit(NoofProc, ProcessSize, NoofPartitions, SizeandStatesofPartitions):
+    n = NoofProc
+    flag = False
+    temp = SizeandStatesofPartitions
+    temp.sort()
+    for i in range(1, NoofProc + 1):
+        for j in range(1, NoofPartitions + 1):
+            if temp[-j][2] is False and ProcessSize[i - 1] < temp[-j][0]:
+                temp[-j][1] = i
+                temp[-j][2] = True
+                flag = True
+                break
+    print("Process No \t Process Size \t Block Number")
+    for i in range(1, NoofProc + 1):
+        print(i, "\t\t\t\t", ProcessSize[i - 1], "\t\t\t", end="")
+        for j in range(1, NoofPartitions + 1):
+            if i == SizeandStatesofPartitions[-j][1]:
+                print("Block", SizeandStatesofPartitions[-j][3])
+        print("\n")
+
+
+def BestFit(NoofProc, ProcessSize, NoofPartitions, SizeandStatesofPartitions):
+    n = NoofProc
+    flag = False
+    temp = SizeandStatesofPartitions
+    temp.sort()
+
+    for i in range(1, NoofProc + 1):
+        for j in range(NoofPartitions):
+            if temp[j][2] is False and ProcessSize[i - 1] < temp[j][0]:
+                temp[j][1] = i
+                temp[j][2] = True
+                flag = True
+                break
+    print("Process No \t Process Size \t Block Number")
+    for i in range(1, NoofProc + 1):
+        print(i, "\t\t\t\t", ProcessSize[i - 1], "\t\t\t", end="")
+        for j in range(NoofPartitions):
+            if i == SizeandStatesofPartitions[j][1]:
+                print("Block", SizeandStatesofPartitions[j][3])
+        print("\n")
+
+
+NoofProc = int(input("Enter to the number of processes: "))
+ProcessSize = eval(input("Enter the process sizes: (In the form or syntax of a list) "))
+NoofPartitions = int(input("Enter the number of partitions: "))
+print("Enter the size of the partitions: ")
+SizeandState = []
+for i in range(NoofPartitions):
+    SizeandState.append([0, None, False, 0])
+# SizeandState = [[0, None, False, 0]]*NoofPartitions
+for i in range(NoofPartitions):
+    SizeandState[i][3] = i + 1
+print(SizeandState)
+Partitionsize = eval(input("Enter the size of the partitions in an Order(Between []): "))
+for i in Partitionsize:
+    SizeandState[Partitionsize.index(i)][0] = i
+
+status = True
+while status:
+    print("\n1. First Fit\n2. Best Fit\n3. Worst Fit\n4. Exit")
+    ch = int(input("Enter your choice: "))
+    if ch == 1:
+        FirstFit(NoofProc, ProcessSize, NoofPartitions, SizeandState)
+
+    elif ch == 2:
+        BestFit(NoofProc, ProcessSize, NoofPartitions, SizeandState)
+    elif ch == 3:
+        WorstFit(NoofProc, ProcessSize, NoofPartitions, SizeandState)
+    elif ch == 4:
+        status = False
+    else:
+        print("Invalid option!")
+
+
